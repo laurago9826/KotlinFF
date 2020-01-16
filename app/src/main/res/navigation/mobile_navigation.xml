@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_play_music">
+    <fragment
+        android:id="@+id/navigation_play_music"
+        android:name="com.example.android.musicapplicationv2.ui.playmusic.PlayMusicFragment"
+        android:label="Play music"
+        tools:layout="@layout/play_music_fragment" />
+    <fragment
+        android:id="@+id/navigation_list"
+        android:name="com.example.android.musicapplicationv2.ui.list.ListMusicFragment"
+        android:label="List music"
+        tools:layout="@layout/list_music_fragment" />
+    <fragment
+        android:id="@+id/navigation_add"
+        android:name="com.example.android.musicapplicationv2.ui.add.AddSongFragment"
+        android:label="Add song"
+        tools:layout="@layout/add_song_fragment" />
+</navigation>
