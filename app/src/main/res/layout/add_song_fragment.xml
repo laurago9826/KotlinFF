@@ -1,21 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.add.AddSongFragment">
-
-    <TextView
-        android:id="@+id/text_add_song"
+    tools:context=".ui.add.AddSongFragment" >
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-</FrameLayout>
+        android:layout_height="match_parent"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:orientation="vertical">
+        <TextView
+            android:theme="@style/InputTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:height="@dimen/input_height"
+            android:text="@string/song_title_lbl"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:theme="@style/InputTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:height="@dimen/input_height"
+            android:text="@string/artist_lbl"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:theme="@style/InputTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:height="@dimen/input_height"
+            android:text="@string/album_lbl"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:theme="@style/InputTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:height="@dimen/input_height"
+            android:text="@string/year_of_release_lbl"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            />
+        <TextView
+            android:theme="@style/InputTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:height="@dimen/input_height"
+            android:text="@string/song_duration_lbl"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="time"/>
+
+        <Button
+            android:id="@+id/add_song_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:text="@string/save_song_btn"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp" />
+
+    </LinearLayout>
+</layout>

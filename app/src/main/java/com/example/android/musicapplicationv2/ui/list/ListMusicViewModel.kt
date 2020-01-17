@@ -1,12 +1,33 @@
 package com.example.android.musicapplicationv2.ui.list
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-class ListMusicViewModel : ViewModel() {
+import android.app.Application
+import android.text.Spanned
+import androidx.lifecycle.*
+import com.example.android.musicapplicationv2.data.SongDatabase
+import com.example.android.musicapplicationv2.data.SongRepository
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is list music Fragment"
+class ListMusicViewModel (application: Application) : AndroidViewModel(application) {
+
+    private val repository : SongRepository
+
+    //val songStrings : LiveData<Spanned>
+
+    init {
+        val dataSource = SongDatabase.getInstance(application).songDatabaseDao
+        repository= SongRepository(dataSource)
+        val songs=repository.songs
+        /*List<String> songString =
+        songString = Transformations.map(songs) { items ->
+            formatNights(items, application.resources)
+        }*/
     }
-    val text: LiveData<String> = _text
+
+    private fun parseSongsToStrings() : List<String>{
+        val songs = repository.songs.value
+        var songsString = ArrayList<String>()
+        songs?.forEach{
+            songsString.add(it.song_title+" - "+it.artist+"\n"+it.album + ": "+it.year+"\t("+it.duration+")")
+        }
+        return songsString
+    }
 }

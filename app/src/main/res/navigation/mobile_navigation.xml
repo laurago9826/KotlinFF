@@ -18,5 +18,24 @@
         android:id="@+id/navigation_add"
         android:name="com.example.android.musicapplicationv2.ui.add.AddSongFragment"
         android:label="Add song"
-        tools:layout="@layout/add_song_fragment" />
+        tools:layout="@layout/add_song_fragment" >
+        <action
+            android:id="@+id/action_navigation_add_to_navigation_list"
+            app:destination="@id/navigation_list" />
+        <argument
+            android:name="song_title"
+            app:argType="string" />
+        <argument
+            android:name="artist"
+            app:argType="string" />
+        <argument
+            android:name="album"
+            app:argType="string" />
+        <argument
+            android:name="year"
+            app:argType="integer" />
+        <argument
+            android:name="duration"
+            app:argType="long" />
+    </fragment>
 </navigation>

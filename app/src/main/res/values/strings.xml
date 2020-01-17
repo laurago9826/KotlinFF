@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Music Application</string>
+    <string name="song_title_lbl">Title</string>
+    <string name="artist_lbl">Artist</string>
+    <string name="album_lbl">Album</string>
+    <string name="song_duration_lbl">Duration</string>
+    <string name="year_of_release_lbl">Year of release</string>
+    <string name="save_song_btn">Save</string>
 </resources>
