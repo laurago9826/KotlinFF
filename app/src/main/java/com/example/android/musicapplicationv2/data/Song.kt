@@ -17,5 +17,5 @@ data class Song (
 
     var year: Int,
 
-    var duration: Long
+    var duration: Int
     )

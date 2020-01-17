@@ -13,7 +13,28 @@
         android:id="@+id/navigation_list"
         android:name="com.example.android.musicapplicationv2.ui.list.ListMusicFragment"
         android:label="List music"
-        tools:layout="@layout/list_music_fragment" />
+        tools:layout="@layout/list_music_fragment" >
+        <argument
+            android:name="song_title"
+            app:argType="string"
+            app:nullable="false"/>
+        <argument
+            android:name="artist"
+            app:argType="string"
+            app:nullable="false"/>
+        <argument
+            android:name="album"
+            app:argType="string"
+            app:nullable="false"/>
+        <argument
+            android:name="year"
+            app:argType="integer"
+            app:nullable="false"/>
+        <argument
+            android:name="duration"
+            app:argType="integer"
+            app:nullable="false"/>
+    </fragment>
     <fragment
         android:id="@+id/navigation_add"
         android:name="com.example.android.musicapplicationv2.ui.add.AddSongFragment"
@@ -22,20 +43,5 @@
         <action
             android:id="@+id/action_navigation_add_to_navigation_list"
             app:destination="@id/navigation_list" />
-        <argument
-            android:name="song_title"
-            app:argType="string" />
-        <argument
-            android:name="artist"
-            app:argType="string" />
-        <argument
-            android:name="album"
-            app:argType="string" />
-        <argument
-            android:name="year"
-            app:argType="integer" />
-        <argument
-            android:name="duration"
-            app:argType="long" />
     </fragment>
 </navigation>

@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/label"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/title_and_artist"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:padding="10dip"
+        android:padding="5dip"
         android:textSize="16sp"
         android:textStyle="bold" >
     </TextView>
+    <TextView
+        android:id="@+id/other_info"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="5dip"
+        android:textSize="16sp" >
+    </TextView>
+</LinearLayout>
