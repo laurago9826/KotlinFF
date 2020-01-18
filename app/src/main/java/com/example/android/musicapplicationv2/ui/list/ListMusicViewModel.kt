@@ -17,7 +17,6 @@ class ListMusicViewModel (application: Application) : AndroidViewModel(applicati
         val dataSource = SongDatabase.getInstance(application).songDatabaseDao
         repository = SongRepository(dataSource)
         songs = repository.songs
-
     }
 
     fun deleteSong(song: Song) {

@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:textSize="18dp"
-                android:text="@{playMusicViewModel.duration}"/>
+                android:text="@{playMusicViewModel.leftDuration}"/>
 
             <SeekBar
                 android:layout_width="match_parent"
@@ -67,8 +67,8 @@
                     android:layout_weight="1"
                     android:padding="18dp"
                     android:layout_gravity="center"
-                    android:tint="@color/colorDarkGrey"
-                    android:src="@drawable/play" />
+                    android:onClick="@{() -> playMusicViewModel.onPlayStopClicked()}"
+                    android:tint="@color/colorDarkGrey"/>
                 <ImageView
                     android:id="@+id/next"
                     android:layout_width="0dp"

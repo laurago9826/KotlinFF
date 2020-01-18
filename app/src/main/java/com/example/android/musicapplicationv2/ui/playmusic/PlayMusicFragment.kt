@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.ListView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -40,7 +42,10 @@ class PlayMusicFragment : Fragment() {
             playMusicViewModel.updateTitleAndArtistString()
             playMusicViewModel.updateDurationString()
         })
-        playMusicViewModel.updateCurrentSong(getIdArg())
+        playMusicViewModel.currentlyPlaying.observe(this, Observer {
+            updatePlayStopIcon()
+        })
+        playMusicViewModel.updateSongFromNavigation(getIdArg())
 
 
 
@@ -56,5 +61,13 @@ class PlayMusicFragment : Fragment() {
             id = -1 //insert
         }
         return id
+    }
+
+    private fun updatePlayStopIcon() {
+        val playStopImgView = binding.root.findViewById(R.id.play_stop) as ImageView
+        if(playMusicViewModel.currentlyPlaying.value!!)
+            playStopImgView.setImageResource(R.drawable.stop)
+        else
+            playStopImgView.setImageResource(R.drawable.play)
     }
 }

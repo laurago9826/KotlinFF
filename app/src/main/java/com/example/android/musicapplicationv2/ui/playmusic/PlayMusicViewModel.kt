@@ -14,6 +14,13 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
 
     private val repository : SongRepository
 
+    private var _currentlyPlaying = MutableLiveData<Boolean>().apply { value = false }
+    var currentlyPlaying : MutableLiveData<Boolean>
+        get() = _currentlyPlaying
+        set(value) {
+            _currentlyPlaying = value
+        }
+
     private var _currentSong = MutableLiveData<Song?>()
     var currentSong : MutableLiveData<Song?>
         get() = _currentSong
@@ -28,11 +35,11 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
             _titleAndArtist = value
         }
 
-    private var _duration = MutableLiveData<String>()
-    var duration : MutableLiveData<String>
-        get() = _duration
+    private var _leftDuration = MutableLiveData<String>()
+    var leftDuration : MutableLiveData<String>
+        get() = _leftDuration
         set(value) {
-            _duration = value
+            _leftDuration = value
         }
 
 
@@ -42,6 +49,7 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
         viewModelScope.launch {
             currentSong.value = repository.next(-1) //get first item
         }
+        currentlyPlaying.value = false
     }
 
     fun onNextClicked() {
@@ -62,18 +70,24 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
+    fun onPlayStopClicked() {
+        currentlyPlaying.value = !currentlyPlaying.value!!
+    }
+
     fun updateTitleAndArtistString() {
         titleAndArtist.value = currentSong.value?.song_title + " - " + currentSong.value?.artist
     }
 
     fun updateDurationString() {
-        duration.value = formatDuration(currentSong.value?.duration!!)
+        leftDuration.value = formatDuration(currentSong.value?.duration!!)
     }
 
-    fun updateCurrentSong(id: Long) {
+    fun updateSongFromNavigation(id: Long) {
         viewModelScope.launch {
-            if(id != (-1).toLong())
+            if(id != (-1).toLong()) {
                 currentSong.value = repository.get(id)
+                currentlyPlaying.value = true
+            }
         }
     }
 }
