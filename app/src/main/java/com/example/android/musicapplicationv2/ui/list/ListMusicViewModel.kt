@@ -26,40 +26,9 @@ class ListMusicViewModel (application: Application) : AndroidViewModel(applicati
          }
     }
 
-    fun getTitleAndArtistArray() : LiveData<Array<String>> {
-        val songs : LiveData<List<Song>> = repository.songs
-        return Transformations.map(songs) {
-            getTitleAndArtistArrayHelper(it)
+    fun deleteSong(song: Song) {
+        viewModelScope.launch {
+            repository.delete(song)
         }
-    }
-
-    private fun getTitleAndArtistArrayHelper(songss: List<Song>) : Array<String> {
-        var str = ArrayList<String>()
-        for(s in songss) {
-            str.add(s.song_title + " - " + s.artist)
-        }
-        return str.toTypedArray()
-    }
-
-
-    fun getOtherInfoArray() : LiveData<Array<String>> {
-        val songs : LiveData<List<Song>> = repository.songs
-        return Transformations.map(songs) { items ->
-            getOtherInfoArrayHelper(items)
-        }
-    }
-
-    private fun getOtherInfoArrayHelper(songss: List<Song>) : Array<String> {
-        var str = ArrayList<String>()
-        for(s in songss) {
-            str.add(s.album + ": " + s.year + "  (" + formatDuration(s.duration) + ")")
-        }
-        return str.toTypedArray()
-    }
-
-    private fun formatDuration(sec: Int) : String {
-        var min = sec / 60
-        var sec = sec - min * 60
-        return "$min:$sec"
     }
 }

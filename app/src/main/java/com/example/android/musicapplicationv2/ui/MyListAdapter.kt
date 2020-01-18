@@ -15,6 +15,9 @@ class MyListAdapter(private val context: Activity, private val songs: List<Song>
     private val artistAndTitle = getTitleAndArtistArrayHelper(songs)
     private val otherInfo = getOtherInfoArrayHelper(songs)
 
+    fun getSongs() : List<Song> {
+        return songs
+    }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater = context.layoutInflater

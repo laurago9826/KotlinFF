@@ -6,4 +6,7 @@
     <string name="song_duration_lbl">Duration</string>
     <string name="year_of_release_lbl">Year of release</string>
     <string name="save_song_btn">Save</string>
+    <string name="menu_play">Play</string>
+    <string name="menu_delete">Delete</string>
+    <string name="menu_modify">Modify</string>
 </resources>
