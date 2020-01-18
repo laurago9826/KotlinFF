@@ -5,7 +5,7 @@ import kotlinx.coroutines.withContext
 
 class SongRepository(private val database: SongDatabaseDao) {
 
-    val songs =database.getAllSongs();
+    val songs = database.getAllSongs()
 
     suspend fun insert(song: Song){
         withContext(Dispatchers.IO) {

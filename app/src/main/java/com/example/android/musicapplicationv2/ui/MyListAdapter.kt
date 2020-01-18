@@ -6,23 +6,48 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.example.android.musicapplicationv2.R
+import com.example.android.musicapplicationv2.R.layout
+import com.example.android.musicapplicationv2.data.Song
 
-class MyListAdapter(private val context: Activity, private val title_artist: Array<String?>,
-                    private val other_info: Array<String?>)
-    : ArrayAdapter<String>(context, R.layout.song_templ, title_artist) {
+class MyListAdapter(private val context: Activity, private val songs: List<Song>)
+    : ArrayAdapter<String>(context, layout.song_templ, arrayOfNulls(songs.size)) {
+
+    private val artistAndTitle = getTitleAndArtistArrayHelper(songs)
+    private val otherInfo = getOtherInfoArrayHelper(songs)
 
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-
         val inflater = context.layoutInflater
-        val rowView = inflater.inflate(R.layout.song_templ, null, true)
+        val rowView = inflater.inflate(layout.song_templ, null, true)
 
         val titleArtistText = rowView.findViewById(R.id.title_and_artist) as TextView
         val otherInfoText = rowView.findViewById(R.id.other_info) as TextView
 
-        titleArtistText.text = title_artist[position]
-        otherInfoText.text = other_info[position]
+        titleArtistText.text = artistAndTitle[position]
+        otherInfoText.text = otherInfo[position]
 
         return rowView
+    }
+
+    private fun getTitleAndArtistArrayHelper(songss: List<Song>) : Array<String> {
+        var str = ArrayList<String>()
+        for(s in songss) {
+            str.add(s.song_title + " - " + s.artist)
+        }
+        return str.toTypedArray()
+    }
+
+    private fun getOtherInfoArrayHelper(songss: List<Song>) : Array<String> {
+        var str = ArrayList<String>()
+        for(s in songss) {
+            str.add(s.album + ": " + s.year + "  (" + formatDuration(s.duration) + ")")
+        }
+        return str.toTypedArray()
+    }
+
+    private fun formatDuration(sec: Int) : String {
+        var min = sec / 60
+        var sec = sec - min * 60
+        return "$min:$sec"
     }
 }

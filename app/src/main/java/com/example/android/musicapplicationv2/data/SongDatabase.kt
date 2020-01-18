@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = arrayOf(Song::class), version = 1,  exportSchema = false)
+@Database(entities = [Song::class], version = 1,  exportSchema = false)
 abstract class SongDatabase : RoomDatabase() {
 
     abstract val songDatabaseDao: SongDatabaseDao
