@@ -1,10 +1,21 @@
 package com.example.android.musicapplicationv2.ui.add
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.*
+import com.example.android.musicapplicationv2.data.Song
+import com.example.android.musicapplicationv2.data.SongDatabase
+import com.example.android.musicapplicationv2.data.SongRepository
+import kotlinx.coroutines.launch
 
 
-class AddSongViewModel : ViewModel() {
+class AddSongViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val repository : SongRepository
+
+    init {
+        val dataSource = SongDatabase.getInstance(application).songDatabaseDao
+        repository = SongRepository(dataSource)
+    }
 
     private var _title = MutableLiveData<String>()
     var title: MutableLiveData<String>
@@ -41,4 +52,67 @@ class AddSongViewModel : ViewModel() {
         set(value) {
             _duration = value
         }
+
+
+    fun addOrUpdateSong(id: Long) {
+        viewModelScope.launch {
+            var songFromDb = repository.get(id)
+            if(songFromDb == null)
+                repository.insert(updateSongProperties(createEmptySong()))
+            else
+                repository.update(updateSongProperties(songFromDb))
+        }
+    }
+
+    private fun createEmptySong() : Song {
+        return Song(song_title = "", artist = "", album = "", year = 0, duration = 0)
+    }
+
+    private fun updateSongProperties(song: Song) : Song {
+        song.song_title = _title.value ?: ""
+        song.artist = _artist.value ?: ""
+        song.album = _album.value ?: ""
+        song.year = _year.value ?: 0
+        song.duration = parseStringDuration(_duration.value) ?: 0
+        return song
+    }
+
+    fun updateLiveDataOnCreation(id: Long) {
+        var song : Song
+        if(id != (-1).toLong()) {
+            viewModelScope.launch {
+                song = repository.get(id)!!
+                _title.value = song.song_title
+                _artist.value = song.artist
+                _album.value = song.album
+                _year.value = song.year
+                _duration.value = formatDuration(song.duration)
+            }
+        }
+    }
+
+    private fun formatDuration(sec: Int) : String {
+        var min = sec / 60
+        var sec = sec - min * 60
+        return "$min:$sec"
+    }
+
+    private fun parseStringDuration(duration: String?) : Int? {
+        var min_and_sec = duration?.split(':')
+        var number = true
+        if(min_and_sec != null &&  min_and_sec!!.size == 2 ) {
+            var num1 = 0
+            var num2 = 0
+            try {
+                num1 = Integer.parseInt(min_and_sec[0])
+                num2 = Integer.parseInt(min_and_sec[1])
+            } catch (e: NumberFormatException) {
+                number = false
+            }
+            if (number && num1 < 100 && num2 < 60) {
+                return num1*60 + num2
+            }
+        }
+        return null
+    }
 }

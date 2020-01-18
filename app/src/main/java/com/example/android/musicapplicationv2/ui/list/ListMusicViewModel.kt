@@ -10,20 +10,14 @@ import kotlinx.coroutines.launch
 class ListMusicViewModel (application: Application) : AndroidViewModel(application) {
 
     private val repository : SongRepository
-    //val songsString = LiveData<List<String>>()
+
     val songs : LiveData<List<Song>>
 
     init {
         val dataSource = SongDatabase.getInstance(application).songDatabaseDao
-        repository =SongRepository(dataSource)
+        repository = SongRepository(dataSource)
         songs = repository.songs
 
-    }
-
-     fun addSong(song: Song) {
-         viewModelScope.launch {
-             repository.insert(song)
-         }
     }
 
     fun deleteSong(song: Song) {

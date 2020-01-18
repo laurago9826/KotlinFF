@@ -24,4 +24,12 @@ class SongRepository(private val database: SongDatabaseDao) {
             database.update(song)
         }
     }
+
+    suspend fun get(id: Long) : Song? {
+        var fromDb : Song? = null
+        withContext(Dispatchers.IO) {
+            fromDb = database.get(id)
+        }
+        return fromDb
+    }
 }
