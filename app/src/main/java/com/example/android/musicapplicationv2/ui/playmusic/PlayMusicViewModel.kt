@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.android.musicapplicationv2.data.Song
 import com.example.android.musicapplicationv2.data.SongDatabase
 import com.example.android.musicapplicationv2.data.SongRepository
+import com.example.android.musicapplicationv2.ui.formatDuration
 import kotlinx.coroutines.launch
 
 class PlayMusicViewModel(application: Application) : AndroidViewModel(application) {
@@ -26,6 +27,14 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
         set(value) {
             _titleAndArtist = value
         }
+
+    private var _duration = MutableLiveData<String>()
+    var duration : MutableLiveData<String>
+        get() = _duration
+        set(value) {
+            _duration = value
+        }
+
 
     init {
         val dataSource = SongDatabase.getInstance(application).songDatabaseDao
@@ -55,5 +64,9 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun updateTitleAndArtistString() {
         titleAndArtist.value = currentSong.value?.song_title + " - " + currentSong.value?.artist
+    }
+
+    fun updateDurationString() {
+        duration.value = formatDuration(currentSong.value?.duration!!)
     }
 }

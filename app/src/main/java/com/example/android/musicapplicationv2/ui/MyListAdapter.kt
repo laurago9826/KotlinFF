@@ -47,10 +47,4 @@ class MyListAdapter(private val context: Activity, private val songs: List<Song>
         }
         return str.toTypedArray()
     }
-
-    private fun formatDuration(sec: Int) : String {
-        var min = sec / 60
-        var sec = sec - min * 60
-        return "$min:$sec"
-    }
 }

@@ -36,11 +36,8 @@ class PlayMusicFragment : Fragment() {
 
         playMusicViewModel.currentSong.observe(this, Observer {
             playMusicViewModel.updateTitleAndArtistString()
+            playMusicViewModel.updateDurationString()
         })
-
-        //binding.next.setOnClickListener{
-        //    playMusicViewModel.onNextClicked()
-        //}
 
 
 
