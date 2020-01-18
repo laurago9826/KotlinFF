@@ -9,10 +9,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.navArgs
 
 import com.example.android.musicapplicationv2.R
 import com.example.android.musicapplicationv2.databinding.AddSongFragmentBinding
 import com.example.android.musicapplicationv2.databinding.PlayMusicFragmentBinding
+import com.example.android.musicapplicationv2.ui.add.AddSongFragmentArgs
 
 class PlayMusicFragment : Fragment() {
 
@@ -38,10 +40,21 @@ class PlayMusicFragment : Fragment() {
             playMusicViewModel.updateTitleAndArtistString()
             playMusicViewModel.updateDurationString()
         })
-
+        playMusicViewModel.updateCurrentSong(getIdArg())
 
 
 
         return binding.root
+    }
+
+    private fun getIdArg() : Long {
+        var id : Long
+        try{
+            val args: PlayMusicFragmentArgs by navArgs()
+            id = args.id //update
+        } catch (e: java.lang.reflect.InvocationTargetException) {
+            id = -1 //insert
+        }
+        return id
     }
 }

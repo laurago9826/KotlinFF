@@ -69,4 +69,11 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
     fun updateDurationString() {
         duration.value = formatDuration(currentSong.value?.duration!!)
     }
+
+    fun updateCurrentSong(id: Long) {
+        viewModelScope.launch {
+            if(id != (-1).toLong())
+                currentSong.value = repository.get(id)
+        }
+    }
 }
