@@ -32,4 +32,20 @@ class SongRepository(private val database: SongDatabaseDao) {
         }
         return fromDb
     }
+
+    suspend fun next(id: Long) : Song? {
+        var fromDb : Song? = null
+        withContext(Dispatchers.IO) {
+            fromDb = database.next(id)
+        }
+        return fromDb
+    }
+
+    suspend fun previous(id: Long) : Song? {
+        var fromDb : Song? = null
+        withContext(Dispatchers.IO) {
+            fromDb = database.previous(id)
+        }
+        return fromDb
+    }
 }

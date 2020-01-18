@@ -20,4 +20,10 @@ interface SongDatabaseDao{
 
     @Query("select * from songs")
     fun getAllSongs(): LiveData<List<Song>>
+
+    @Query("select * from songs where id > :key order by id asc limit 1")
+    fun next(key: Long) : Song?
+
+    @Query("select * from songs where id < :key order by id desc limit 1")
+    fun previous(key: Long) : Song?
 }

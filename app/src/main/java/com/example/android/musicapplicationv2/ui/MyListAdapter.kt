@@ -43,7 +43,7 @@ class MyListAdapter(private val context: Activity, private val songs: List<Song>
     private fun getOtherInfoArrayHelper(songss: List<Song>) : Array<String> {
         var str = ArrayList<String>()
         for(s in songss) {
-            str.add(s.album + ": " + s.year + "  (" + formatDuration(s.duration) + ")")
+            str.add(s.album + ": " + s.year + "   (" + formatDuration(s.duration) + ")")
         }
         return str.toTypedArray()
     }

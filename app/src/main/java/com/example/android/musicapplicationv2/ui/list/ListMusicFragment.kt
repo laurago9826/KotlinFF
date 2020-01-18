@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.android.musicapplicationv2.R
 import com.example.android.musicapplicationv2.data.Song
+import com.example.android.musicapplicationv2.databinding.AddSongFragmentBinding
 import com.example.android.musicapplicationv2.databinding.ListMusicFragmentBinding
 import com.example.android.musicapplicationv2.ui.MyListAdapter
 import com.example.android.musicapplicationv2.ui.add.AddSongFragmentDirections
@@ -40,20 +41,15 @@ class ListMusicFragment : Fragment() {
             listV.adapter = MyListAdapter(activity as Activity, songs)
         })
 
-        listV.setOnItemClickListener { parent, view, position, id ->
+        listV.setOnItemClickListener { _, view, position, _ ->
             val popupMenu = PopupMenu(activity!!.applicationContext, view)
             popupMenu.menuInflater.inflate(R.menu.popup_menu, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
                 var song = (listV.adapter as MyListAdapter).getSongs()[position]
                 when(item.itemId) {
-                    R.id.action_play ->
-                        doSomething()
-                    R.id.action_delete ->
-                        viewModel.deleteSong(song)
-                    R.id.action_modify -> {
-                        val action = ListMusicFragmentDirections.actionNavigationListToNavigationAdd(song.id)
-                        findNavController().navigate(action)
-                    }
+                    R.id.action_play -> navigateToPlay(song.id)
+                    R.id.action_delete -> viewModel.deleteSong(song)
+                    R.id.action_modify -> navigateToModify(song.id)
                 }
                 true
             })
@@ -62,6 +58,15 @@ class ListMusicFragment : Fragment() {
         return binding.root
     }
 
-    private fun doSomething() {
+    private fun navigateToPlay(id: Long) {
+        val action =
+            ListMusicFragmentDirections.actionNavigationListToNavigationPlayMusic(id)
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToModify(id: Long) {
+        val action =
+            ListMusicFragmentDirections.actionNavigationListToNavigationAdd(id)
+        findNavController().navigate(action)
     }
 }
