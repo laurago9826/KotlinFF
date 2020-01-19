@@ -1,12 +1,11 @@
 package com.example.android.musicapplicationv2.ui.add
 
 import android.app.Application
+import android.text.format.DateUtils
 import androidx.lifecycle.*
 import com.example.android.musicapplicationv2.data.Song
 import com.example.android.musicapplicationv2.data.SongDatabase
 import com.example.android.musicapplicationv2.data.SongRepository
-import com.example.android.musicapplicationv2.ui.formatDuration
-import com.example.android.musicapplicationv2.ui.parseStringDuration
 import kotlinx.coroutines.launch
 
 
@@ -58,7 +57,7 @@ class AddSongViewModel(application: Application) : AndroidViewModel(application)
 
     fun addOrUpdateSong(id: Long) {
         viewModelScope.launch {
-            var songFromDb = repository.get(id)
+            val songFromDb = repository.get(id)
             if(songFromDb == null)
                 repository.insert(updateSongProperties(createEmptySong()))
             else
@@ -88,8 +87,27 @@ class AddSongViewModel(application: Application) : AndroidViewModel(application)
                 _artist.value = song.artist
                 _album.value = song.album
                 _year.value = song.year
-                _duration.value = formatDuration(song.duration)
+                _duration.value = DateUtils.formatElapsedTime(song.duration.toLong())
             }
         }
+    }
+
+    private fun parseStringDuration(duration: String?) : Int? {
+        val minAndSec = duration?.split(':')
+        var number = true
+        if(null != minAndSec && minAndSec.size == 2) {
+            var num1 = 0
+            var num2 = 0
+            try {
+                num1 = Integer.parseInt(minAndSec[0])
+                num2 = Integer.parseInt(minAndSec[1])
+            } catch (e: NumberFormatException) {
+                number = false
+            }
+            if (number && num1 < 100 && num2 < 60) {
+                return num1*60 + num2
+            }
+        }
+        return null //incorrect format or ranges
     }
 }

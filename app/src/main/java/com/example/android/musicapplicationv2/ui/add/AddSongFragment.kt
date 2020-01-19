@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 
 import com.example.android.musicapplicationv2.R
 import com.example.android.musicapplicationv2.databinding.AddSongFragmentBinding
+import java.lang.reflect.InvocationTargetException
 
 class AddSongFragment : Fragment() {
 
@@ -28,14 +29,14 @@ class AddSongFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.add_song_fragment, container, false
         )
-        addSongViewModel =
+        this.addSongViewModel =
             ViewModelProviders.of(this).get(AddSongViewModel::class.java)
         binding.addSongViewModel = addSongViewModel
         binding.lifecycleOwner = this
 
 
-        var idArgs = getIdArg()
-        addSongViewModel.updateLiveDataOnCreation(idArgs)
+        val idArgs = getIdArg()
+        this.addSongViewModel.updateLiveDataOnCreation(idArgs)
         binding.addSongButton.setOnClickListener {
             addSongViewModel.addOrUpdateSong(idArgs)
             val action   = AddSongFragmentDirections.actionNavigationAddToNavigationList()
@@ -46,13 +47,11 @@ class AddSongFragment : Fragment() {
     }
 
     private fun getIdArg() : Long {
-        var id : Long
-        try{
+        return try {
             val args: AddSongFragmentArgs by navArgs()
-            id = args.id //update
-        } catch (e: java.lang.reflect.InvocationTargetException) {
-            id = -1 //insert
+            args.id //update
+        } catch (e: InvocationTargetException) {
+            -1 //insert
         }
-        return id
     }
 }

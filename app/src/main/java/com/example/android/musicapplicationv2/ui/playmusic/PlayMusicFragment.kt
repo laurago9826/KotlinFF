@@ -16,6 +16,7 @@ import androidx.navigation.fragment.navArgs
 
 import com.example.android.musicapplicationv2.R
 import com.example.android.musicapplicationv2.databinding.PlayMusicFragmentBinding
+import java.lang.reflect.InvocationTargetException
 
 class PlayMusicFragment : Fragment() {
 
@@ -42,28 +43,26 @@ class PlayMusicFragment : Fragment() {
             playMusicViewModel.continuePlayingIfAlready()
             playMusicViewModel.updateSongDurationString()
         })
-        playMusicViewModel.seekbarProgressValue.observe(this, Observer {
+        playMusicViewModel.seekBarProgressValue.observe(this, Observer {
             playMusicViewModel.updateTimeString()
         })
         playMusicViewModel.currentlyPlaying.observe(this, Observer {
             updatePlayStopIcon()
         })
         playMusicViewModel.updateSongFromNavigation(getIdArg())
-        updateTimeLeftFromSeekbar()
+        updateTimeLeftFromSeekBar()
 
 
         return binding.root
     }
 
     private fun getIdArg() : Long {
-        var id : Long
-        try{
+        return try{
             val args: PlayMusicFragmentArgs by navArgs()
-            id = args.id //update
-        } catch (e: java.lang.reflect.InvocationTargetException) {
-            id = -1 //insert
+            args.id //from list view
+        } catch (e: InvocationTargetException) {
+            -1
         }
-        return id
     }
 
     private fun updatePlayStopIcon() {
@@ -74,16 +73,16 @@ class PlayMusicFragment : Fragment() {
             playStopImgView.setImageResource(R.drawable.play)
     }
 
-    private fun updateTimeLeftFromSeekbar() {
-        val seekbar = binding.root.findViewById<SeekBar>(R.id.seekbar)
-        seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+    private fun updateTimeLeftFromSeekBar() {
+        val seekBar = binding.root.findViewById<SeekBar>(R.id.seekbar)
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
                 playMusicViewModel.stopTimer()
             }
 
             @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                playMusicViewModel.setSeekbarProgressValue(seekBar?.progress!!)
+                playMusicViewModel.setSeekBarProgressValue(seekBar?.progress!!)
             }
 
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {

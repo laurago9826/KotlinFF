@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
                 android:max="@{playMusicViewModel.currentSong.duration}"
-                android:progress="@{playMusicViewModel.seekbarProgressValue}">
+                android:progress="@{playMusicViewModel.seekBarProgressValue}">
 
             </SeekBar>
 

@@ -1,6 +1,7 @@
 package com.example.android.musicapplicationv2.ui
 
 import android.app.Activity
+import android.text.format.DateUtils
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
@@ -43,7 +44,7 @@ class MyListAdapter(private val context: Activity, private val songs: List<Song>
     private fun getOtherInfoArrayHelper(songss: List<Song>) : Array<String> {
         var str = ArrayList<String>()
         for(s in songss) {
-            str.add(s.album + ": " + s.year + "   (" + formatDuration(s.duration) + ")")
+            str.add(s.album + ": " + s.year + "   (" + DateUtils.formatElapsedTime(s.duration.toLong()) + ")")
         }
         return str.toTypedArray()
     }
