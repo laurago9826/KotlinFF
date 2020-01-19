@@ -1,14 +1,17 @@
 package com.example.android.musicapplicationv2.ui.playmusic
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
@@ -49,7 +52,7 @@ class PlayMusicFragment : Fragment() {
             updatePlayStopIcon()
         })
         playMusicViewModel.updateSongFromNavigation(getIdArg())
-
+        //tintOnTouch()
 
 
         return binding.root
@@ -67,10 +70,29 @@ class PlayMusicFragment : Fragment() {
     }
 
     private fun updatePlayStopIcon() {
-        val playStopImgView = binding.root.findViewById(R.id.play_stop) as ImageView
+        val playStopImgView = binding.root.findViewById<ImageView>(R.id.play_stop)
         if(playMusicViewModel.currentlyPlaying.value!!)
             playStopImgView.setImageResource(R.drawable.stop)
         else
             playStopImgView.setImageResource(R.drawable.play)
+    }
+
+    private fun tintOnTouch() {
+        val playStopImgView = binding.root.findViewById<ImageView>(R.id.play_stop)
+        val prev = binding.root.findViewById<ImageView>(R.id.previous)
+        val next = binding.root.findViewById<ImageView>(R.id.next)
+        setOnTouchListenerforImg(playStopImgView)
+        setOnTouchListenerforImg(prev)
+        setOnTouchListenerforImg(next)
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setOnTouchListenerforImg(imgView: ImageView) {
+        imgView.setOnTouchListener(object : View.OnTouchListener{
+            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                imgView.setColorFilter(ContextCompat.getColor(context!!, R.color.colorPrimaryDark))
+                return true
+            }
+        })
     }
 }

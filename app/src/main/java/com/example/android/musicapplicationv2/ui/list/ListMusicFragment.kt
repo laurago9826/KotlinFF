@@ -36,7 +36,7 @@ class ListMusicFragment : Fragment() {
             inflater, R.layout.list_music_fragment, container, false
         )
 
-        val listV = binding.root.findViewById(R.id.song_list_view) as ListView
+        val listV = binding.root.findViewById<ListView>(R.id.song_list_view)
         viewModel.songs.observe(this, Observer { songs ->
             listV.adapter = MyListAdapter(activity as Activity, songs)
         })

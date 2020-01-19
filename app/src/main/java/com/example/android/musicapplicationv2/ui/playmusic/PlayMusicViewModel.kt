@@ -149,9 +149,4 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
             }
         }
     }
-
-    override fun onCleared() {
-        super.onCleared()
-        timer.cancel()
-    }
 }
