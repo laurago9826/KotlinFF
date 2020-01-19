@@ -170,12 +170,14 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
         seekbarProgressValue.value = currentSong.value?.duration?.minus(timeLeft.value!!.toLong())?.toInt()
     }
 
-    fun setSeekbarThumbValue(ldist: Int) {
-        stopTimer() //timer stopped when started dragging
-        createTimer(ldist.toLong())
-        if(currentlyPlaying.value!!)
-            timer.start()
+    fun setSeekbarProgressValue(ldist: Int) {
         timeLeft.value =  currentSong.value?.duration?.minus(ldist.toLong())
+        startAfterSeekBarSet()
+    }
+
+    private fun startAfterSeekBarSet(){
+        if(currentlyPlaying.value!!)
+            continueTimer()
     }
 
     fun updateTimeLeft() {//song change

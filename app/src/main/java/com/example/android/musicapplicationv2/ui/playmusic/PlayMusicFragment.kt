@@ -84,12 +84,13 @@ class PlayMusicFragment : Fragment() {
 
             @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                var distance = seekBar?.thumb?.bounds?.left
-                playMusicViewModel.setSeekbarThumbValue(distance ?: 0)
+               // var distance = seekBar?.thumb?.bounds?.left
+               // playMusicViewModel.setSeekbarThumbValue(distance ?: 0)
+                playMusicViewModel.setSeekbarProgressValue(seekBar?.progress!!)
             }
 
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) { }
-
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+             }
         })
     }
 }
