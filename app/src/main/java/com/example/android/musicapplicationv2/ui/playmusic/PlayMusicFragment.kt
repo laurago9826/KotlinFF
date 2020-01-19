@@ -39,12 +39,11 @@ class PlayMusicFragment : Fragment() {
 
         playMusicViewModel.currentSong.observe(this, Observer {
             playMusicViewModel.updateTitleAndArtistString()
-            playMusicViewModel.updateTimeLeft()
+            playMusicViewModel.continuePlayingIfAlready()
             playMusicViewModel.updateSongDurationString()
         })
-        playMusicViewModel.timeLeft.observe(this, Observer {
+        playMusicViewModel.seekbarProgressValue.observe(this, Observer {
             playMusicViewModel.updateTimeString()
-            playMusicViewModel.updateSeekbarProgressValue()
         })
         playMusicViewModel.currentlyPlaying.observe(this, Observer {
             updatePlayStopIcon()
@@ -84,13 +83,12 @@ class PlayMusicFragment : Fragment() {
 
             @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
-               // var distance = seekBar?.thumb?.bounds?.left
-               // playMusicViewModel.setSeekbarThumbValue(distance ?: 0)
                 playMusicViewModel.setSeekbarProgressValue(seekBar?.progress!!)
             }
 
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-             }
+                playMusicViewModel.updateTimeString()
+            }
         })
     }
 }

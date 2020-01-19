@@ -45,13 +45,6 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
             _songDuration = value
         }
 
-    private var _timeLeft = MutableLiveData<Long>()
-    var timeLeft : MutableLiveData<Long>
-        get() = _timeLeft
-        set(value) {
-            _timeLeft = value
-        }
-
     private var _currentlyPlaying = MutableLiveData<Boolean>().apply { value = false }
     var currentlyPlaying : MutableLiveData<Boolean>
         get() = _currentlyPlaying
@@ -84,7 +77,8 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
             } else {
                 if(currentlyPlaying.value!!) {
                     stopPlaying() //if already playing and this is the last song
-                    timeLeft.value = 0
+                    seekbarProgressValue.value = 0
+
                 }
             }
         }
@@ -92,18 +86,23 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun onPreviousClicked() {
         val dur = currentSong.value?.duration!!
-        if(dur > 3 && dur.minus(timeLeft.value!!)!! > 3)
-            timeLeft.value = dur.toLong()
+        if(dur > 3 && seekbarProgressValue.value!! > 3)
+            resetProgress()
         else {
             viewModelScope.launch {
                 var fromDb = repository.previous(currentSong.value?.id ?: -1)
                 if (fromDb != null) {
-                    stopTimer()
                     currentSong.value = fromDb
-                    if(currentlyPlaying.value!!)
-                        startPlaying()
                 }
             }
+        }
+    }
+
+    private fun resetProgress() {
+        seekbarProgressValue.value = 0
+        if(currentlyPlaying.value!!) {
+            stopTimer()
+            continueTimer()
         }
     }
 
@@ -124,7 +123,7 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun updateTimeString() {
-        timeString.value = DateUtils.formatElapsedTime(currentSong.value?.duration?.minus(timeLeft.value!!) ?: 0)
+        timeString.value = DateUtils.formatElapsedTime(seekbarProgressValue.value?.toLong() ?: 0)
     }
 
     fun updateSongFromNavigation(id: Long) {
@@ -162,16 +161,12 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     private fun continueTimer() {
-        createTimer(timeLeft.value)
+        createTimer(currentSong.value?.duration?.minus(seekbarProgressValue.value?.toLong() ?:0))
         timer.start()
     }
 
-    fun updateSeekbarProgressValue() {
-        seekbarProgressValue.value = currentSong.value?.duration?.minus(timeLeft.value!!.toLong())?.toInt()
-    }
-
     fun setSeekbarProgressValue(ldist: Int) {
-        timeLeft.value =  currentSong.value?.duration?.minus(ldist.toLong())
+        seekbarProgressValue.value = ldist
         startAfterSeekBarSet()
     }
 
@@ -180,19 +175,19 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
             continueTimer()
     }
 
-    fun updateTimeLeft() {//song change
+    fun continuePlayingIfAlready() {//song change
+        seekbarProgressValue.value = 0
         if(currentlyPlaying.value!!) {
             timer.cancel() //cancel previous timer
             startTimer() //start new one
         }
-        this.timeLeft.value = currentSong.value?.duration?.toLong() //to display time left before clicking on play
     }
 
     private fun createTimer(time: Long?) {
         var millis = time?.times(1000)
         timer = object : CountDownTimer(millis ?:0L, 1000L) {
             override fun onTick(millisUntilFinished: Long) {
-                timeLeft.value = millisUntilFinished / 1000L
+                seekbarProgressValue.value = currentSong.value?.duration?.minus(millisUntilFinished / 1000L)?.toInt()
             }
             override fun onFinish() {
                 onNextClicked()
