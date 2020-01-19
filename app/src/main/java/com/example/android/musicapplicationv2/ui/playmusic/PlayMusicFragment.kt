@@ -40,7 +40,10 @@ class PlayMusicFragment : Fragment() {
 
         playMusicViewModel.currentSong.observe(this, Observer {
             playMusicViewModel.updateTitleAndArtistString()
-            playMusicViewModel.updateDurationString()
+            playMusicViewModel.updateTimeLeft()
+        })
+        playMusicViewModel.timeLeft.observe(this, Observer {
+            playMusicViewModel.updateTimeLeftString()
         })
         playMusicViewModel.currentlyPlaying.observe(this, Observer {
             updatePlayStopIcon()
