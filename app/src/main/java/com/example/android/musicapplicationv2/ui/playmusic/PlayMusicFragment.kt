@@ -1,25 +1,21 @@
 package com.example.android.musicapplicationv2.ui.playmusic
 
-import android.annotation.SuppressLint
+import android.os.Build
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ListView
-import android.widget.TextView
-import androidx.core.content.ContextCompat
+import android.widget.SeekBar
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 
 import com.example.android.musicapplicationv2.R
-import com.example.android.musicapplicationv2.databinding.AddSongFragmentBinding
 import com.example.android.musicapplicationv2.databinding.PlayMusicFragmentBinding
-import com.example.android.musicapplicationv2.ui.add.AddSongFragmentArgs
 
 class PlayMusicFragment : Fragment() {
 
@@ -44,15 +40,17 @@ class PlayMusicFragment : Fragment() {
         playMusicViewModel.currentSong.observe(this, Observer {
             playMusicViewModel.updateTitleAndArtistString()
             playMusicViewModel.updateTimeLeft()
+            playMusicViewModel.updateSongDurationString()
         })
         playMusicViewModel.timeLeft.observe(this, Observer {
-            playMusicViewModel.updateTimeLeftString()
+            playMusicViewModel.updateTimeString()
+            playMusicViewModel.updateSeekbarProgressValue()
         })
         playMusicViewModel.currentlyPlaying.observe(this, Observer {
             updatePlayStopIcon()
         })
         playMusicViewModel.updateSongFromNavigation(getIdArg())
-        //tintOnTouch()
+        updateTimeLeftFromSeekbar()
 
 
         return binding.root
@@ -77,22 +75,21 @@ class PlayMusicFragment : Fragment() {
             playStopImgView.setImageResource(R.drawable.play)
     }
 
-    private fun tintOnTouch() {
-        val playStopImgView = binding.root.findViewById<ImageView>(R.id.play_stop)
-        val prev = binding.root.findViewById<ImageView>(R.id.previous)
-        val next = binding.root.findViewById<ImageView>(R.id.next)
-        setOnTouchListenerforImg(playStopImgView)
-        setOnTouchListenerforImg(prev)
-        setOnTouchListenerforImg(next)
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    private fun setOnTouchListenerforImg(imgView: ImageView) {
-        imgView.setOnTouchListener(object : View.OnTouchListener{
-            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                imgView.setColorFilter(ContextCompat.getColor(context!!, R.color.colorPrimaryDark))
-                return true
+    private fun updateTimeLeftFromSeekbar() {
+        val seekbar = binding.root.findViewById<SeekBar>(R.id.seekbar)
+        seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                playMusicViewModel.stopTimer()
             }
+
+            @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                var distance = seekBar?.thumb?.bounds?.left
+                playMusicViewModel.setSeekbarThumbValue(distance ?: 0)
+            }
+
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) { }
+
         })
     }
 }

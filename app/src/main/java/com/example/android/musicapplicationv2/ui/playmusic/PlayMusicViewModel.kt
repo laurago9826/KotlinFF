@@ -17,11 +17,18 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
 
     private lateinit var timer : CountDownTimer
 
-    private var _timeLeftString = MutableLiveData<String>()
-    var timeLeftString : MutableLiveData<String>
-        get() = _timeLeftString
+    private var _seekbarProgressValue  = MutableLiveData<Int>()
+    var seekbarProgressValue : MutableLiveData<Int>
+        get() = _seekbarProgressValue
+    set(value) {
+        _seekbarProgressValue = value
+    }
+
+    private var _timeString = MutableLiveData<String>()
+    var timeString : MutableLiveData<String>
+        get() = _timeString
         set(value) {
-            _timeLeftString = value
+            _timeString = value
         }
 
     private var _titleAndArtist = MutableLiveData<String>()
@@ -29,6 +36,13 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
         get() = _titleAndArtist
         set(value) {
             _titleAndArtist = value
+        }
+
+    private var _songDuration = MutableLiveData<String>()
+    var songDuration : MutableLiveData<String>
+        get() = _songDuration
+        set(value) {
+            _songDuration = value
         }
 
     private var _timeLeft = MutableLiveData<Long>()
@@ -52,6 +66,8 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
             _currentSong = value
         }
 
+
+
     init {
         val dataSource = SongDatabase.getInstance(application).songDatabaseDao
         repository = SongRepository(dataSource)
@@ -66,16 +82,27 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
             if(fromDb != null) {
                 currentSong.value = fromDb
             } else {
-                stopPlaying() //if already playing and this is the last song
+                if(currentlyPlaying.value!!) {
+                    stopPlaying() //if already playing and this is the last song
+                    timeLeft.value = 0
+                }
             }
         }
     }
 
     fun onPreviousClicked() {
-        viewModelScope.launch {
-            var fromDb = repository.previous(currentSong.value?.id ?: -1)
-            if(fromDb != null) {
-                currentSong.value = fromDb
+        val dur = currentSong.value?.duration!!
+        if(dur > 3 && dur.minus(timeLeft.value!!)!! > 3)
+            timeLeft.value = dur.toLong()
+        else {
+            viewModelScope.launch {
+                var fromDb = repository.previous(currentSong.value?.id ?: -1)
+                if (fromDb != null) {
+                    stopTimer()
+                    currentSong.value = fromDb
+                    if(currentlyPlaying.value!!)
+                        startPlaying()
+                }
             }
         }
     }
@@ -92,8 +119,12 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
         titleAndArtist.value = currentSong.value?.song_title + " - " + currentSong.value?.artist
     }
 
-    fun updateTimeLeftString() {
-        timeLeftString.value = DateUtils.formatElapsedTime(timeLeft.value!!)
+    fun updateSongDurationString() {
+        songDuration.value = DateUtils.formatElapsedTime(currentSong.value?.duration?.toLong() ?:0)
+    }
+
+    fun updateTimeString() {
+        timeString.value = DateUtils.formatElapsedTime(currentSong.value?.duration?.minus(timeLeft.value!!) ?: 0)
     }
 
     fun updateSongFromNavigation(id: Long) {
@@ -120,6 +151,11 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
         timer.cancel()
     }
 
+    fun stopTimer() {
+        if(currentlyPlaying.value!!)
+            timer.cancel()
+    }
+
     private fun startTimer() {
         createTimer(currentSong.value?.duration?.toLong())
         timer.start()
@@ -128,6 +164,18 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
     private fun continueTimer() {
         createTimer(timeLeft.value)
         timer.start()
+    }
+
+    fun updateSeekbarProgressValue() {
+        seekbarProgressValue.value = currentSong.value?.duration?.minus(timeLeft.value!!.toLong())?.toInt()
+    }
+
+    fun setSeekbarThumbValue(ldist: Int) {
+        stopTimer() //timer stopped when started dragging
+        createTimer(ldist.toLong())
+        if(currentlyPlaying.value!!)
+            timer.start()
+        timeLeft.value =  currentSong.value?.duration?.minus(ldist.toLong())
     }
 
     fun updateTimeLeft() {//song change
