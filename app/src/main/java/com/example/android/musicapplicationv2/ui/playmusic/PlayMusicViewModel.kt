@@ -96,7 +96,10 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun updateTitleAndArtistString() {
-        _titleAndArtist.value = currentSong.value?.song_title + " - " + currentSong.value?.artist
+        if(currentSong.value != null)
+            _titleAndArtist.value = currentSong.value?.song_title ?: "" + " - " + currentSong.value?.artist ?: ""
+        else
+            _titleAndArtist.value = ""
     }
 
     fun updateSongDurationString() {
