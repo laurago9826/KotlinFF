@@ -3,5 +3,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="margin_on_inputs">12dp</dimen>
-    <dimen name="input_height">35dp</dimen>
+    <dimen name="input_height">28dp</dimen>
+    <dimen name="textSize">18dp</dimen>
+    <dimen name="paddingOnInputs">20dp</dimen>
+    <dimen name="paddingBottomOnInputs">2dp</dimen>
 </resources>

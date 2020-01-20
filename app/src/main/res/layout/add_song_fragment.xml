@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.add.AddSongFragment" >
+    tools:context=".ui.add.AddSongFragment">
 
     <data>
+
         <variable
             name="addSongViewModel"
             type="com.example.android.musicapplicationv2.ui.add.AddSongViewModel" />
@@ -12,83 +14,164 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:orientation="vertical">
-        <TextView
-            android:theme="@style/InputTextView"
+        android:background="@color/colorPrimaryLight"
+        android:orientation="vertical"
+        android:paddingTop="20dp"
+        app:theme="@style/GeneralStyle">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:height="@dimen/input_height"
-            android:text="@string/song_title_lbl"/>
-        <EditText
-            android:id="@+id/title_edit"
+            android:paddingBottom="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:theme="@style/LinearLayoutOnAdd">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="2dp"
+                    android:height="@dimen/input_height"
+                    android:text="@string/song_title_lbl"
+                    android:theme="@style/InputTextView" />
+
+                <EditText
+                    android:id="@+id/title_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:defaultValue=" "
+                    android:text="@={addSongViewModel.title}" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:defaultValue=" "
-            android:text="@={addSongViewModel.title}"/>
-        <TextView
-            android:theme="@style/InputTextView"
+            android:paddingBottom="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="20dp"
+                android:theme="@style/LinearLayoutOnAdd">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="2dp"
+                    android:height="@dimen/input_height"
+                    android:text="@string/artist_lbl"
+                    android:theme="@style/InputTextView" />
+
+                <EditText
+                    android:id="@+id/artist_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:defaultValue=" "
+                    android:text="@={addSongViewModel.artist}" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:height="@dimen/input_height"
-            android:text="@string/artist_lbl" />
-        <EditText
-            android:id="@+id/artist_edit"
+            android:paddingBottom="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="20dp"
+                android:theme="@style/LinearLayoutOnAdd">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="2dp"
+                    android:height="@dimen/input_height"
+                    android:text="@string/album_lbl"
+                    android:theme="@style/InputTextView" />
+
+                <EditText
+                    android:id="@+id/album_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:defaultValue=" "
+                    android:text="@={addSongViewModel.album}" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:defaultValue=" "
-            android:text="@={addSongViewModel.artist}"/>
-        <TextView
-            android:theme="@style/InputTextView"
+            android:paddingBottom="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:theme="@style/LinearLayoutOnAdd">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:height="@dimen/input_height"
+                    android:text="@string/year_of_release_lbl"
+                    android:theme="@style/InputTextView" />
+
+                <EditText
+                    android:id="@+id/year_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="2dp"
+                    android:defaultValue="0"
+                    android:inputType="number"
+                    android:text="@={``+addSongViewModel.year}" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:height="@dimen/input_height"
-            android:text="@string/album_lbl"/>
-        <EditText
-            android:id="@+id/album_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:defaultValue=" "
-            android:text="@={addSongViewModel.album}"/>
-        <TextView
-            android:theme="@style/InputTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:height="@dimen/input_height"
-            android:text="@string/year_of_release_lbl"
-            />
-        <EditText
-            android:id="@+id/year_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:defaultValue="0"
-            android:text="@={``+addSongViewModel.year}"
-            />
-        <TextView
-            android:theme="@style/InputTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:height="@dimen/input_height"
-            android:text="@string/song_duration_lbl"/>
-        <EditText
-            android:id="@+id/duration_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:defaultValue="0"
-            android:text="@={addSongViewModel.duration}"/>
+            android:paddingBottom="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:theme="@style/LinearLayoutOnAdd">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:height="@dimen/input_height"
+                    android:text="@string/song_duration_lbl"
+                    android:theme="@style/InputTextView" />
+
+                <EditText
+                    android:id="@+id/duration_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:defaultValue="0"
+                    android:text="@={addSongViewModel.duration}" />
+            </LinearLayout>
+        </LinearLayout>
 
         <Button
             android:id="@+id/add_song_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
             android:layout_marginBottom="32dp"
             android:text="@string/save_song_btn"
-            android:layout_marginTop="30dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp" />
+            android:textColor="@color/colorWhite" />
 
     </LinearLayout>
 </layout>

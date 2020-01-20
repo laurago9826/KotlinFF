@@ -1,23 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="fill_parent"
     android:layout_width="match_parent"
-    android:padding="8dp"
-    android:orientation="vertical">
-    <TextView
-        android:id="@+id/title_and_artist"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:padding="5dip"
-        android:textSize="20dp"
-        android:textStyle="bold" >
-    </TextView>
-    <TextView
-        android:id="@+id/other_info"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:padding="5dip"
-        android:textSize="20dp" >
-    </TextView>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:theme="@style/GeneralStyle"
+    android:orientation="vertical"
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/colorWhite"
+        android:padding="2dp">
+        <TextView
+            android:id="@+id/title_and_artist"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:padding="5dip"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal">
+        </TextView>
+        <TextView
+            android:id="@+id/other_info"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:padding="5dip"
+            android:layout_gravity="center_horizontal">
+        </TextView>
+    </LinearLayout>
 </LinearLayout>
