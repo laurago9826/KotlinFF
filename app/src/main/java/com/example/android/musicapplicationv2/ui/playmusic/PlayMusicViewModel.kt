@@ -66,8 +66,8 @@ class PlayMusicViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun onPreviousClicked() {
-        val dur = currentSong.value?.duration!!
-        if(dur > 3 && seekBarProgressValue.value!! > 3)
+        val dur = currentSong.value?.duration
+        if(dur ?: 0 > 3 && seekBarProgressValue.value!! > 3)
             resetProgress()
         else {
             viewModelScope.launch {
